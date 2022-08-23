@@ -4,7 +4,10 @@ set -e
 WHATS_DIRECTORY_BACKUP=$1 # 'default' or '/etc /home /root /usr'
 EXCLUDE_ARGUMENT=$2 # 's' or 'exclude.lst'
 GPG_PUB_KEY=$3
+DELETE_OLD_BACKUP=$4 # 'delete-old' or none
 
+
+CURRENT_DIR=$(pwd)
 BASE_DIR="/home/$(whoami)"
 DIRECTORY_FOR_SAVE="$BASE_DIR/backups/"
 NAME_BACKUP_FILE="$(whoami)_$(date +%F)"
@@ -30,6 +33,14 @@ else
         echo $WHATS_DIRECTORY_BACKUP
     fi
 
+    if [ $DELETE_OLD_BACKUP = "delete-old" ]
+    then
+        cd DIRECTORY_FOR_SAVE
+        echo "Удаление старых бэкапов из $DIRECTORY_FOR_SAVE"
+        find . -name '$(whoami)*' -type f | xargs stat -c "%Y %n" | sort -n #\
+            | head -1 | cut -d' ' -f2 | xargs rm -f
+        cd CURRENT_DIR
+    fi
 
     if [ $EXCLUDE_ARGUMENT = "s" ]
     then
@@ -62,7 +73,7 @@ else
 
     echo -n "2: Архивация бэкапа $NAME_ZIP_BACKUP_FILE ... "
     # добавив ключ -v можно увидеть подробности архивации
-    sudo tar -czpvf $ZIP $ZIP_DIRECTORY 2>/dev/null && echo " Выполнено!" || echo " Ошибка!"
+    sudo tar -czpf $ZIP $ZIP_DIRECTORY 2>/dev/null && echo " Выполнено!" || echo " Ошибка!"
 
     echo -n "3: Шифрование архива используя ключ GPG2 ..."
     gpg --out "$ZIP.asc" \
@@ -72,10 +83,10 @@ else
 
     echo -n "4: Удаление ненужных исходных backup файлов ..."
 
-    echo -n "Удаление незашифрованных backup файлов: $ZIP"
+    echo -n "- Удаление незашифрованного архива backup файлов: $ZIP"
     sudo rm -rf $ZIP && echo " Выполнено!" || echo " Ошибка!"
 
-    echo -n "Удаление незашифрованных backup файлов: $ZIP_DIRECTORY"
+    echo -n "- Удаление директории незашифрованных backup файлов: $ZIP_DIRECTORY"
     sudo rm -rf $ZIP_DIRECTORY/ && echo " Выполнено!" || echo " Ошибка!"
 
     echo "Создание backup файла: $ZIP.asc - Выполнено!"
