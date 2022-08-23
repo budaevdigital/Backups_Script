@@ -4,7 +4,7 @@ set -e
 WHATS_DIRECTORY_BACKUP=$1 # 'default' or '/etc /home /root /usr'
 EXCLUDE_ARGUMENT=$2 # 's' or 'exclude.lst'
 GPG_PUB_KEY=$3
-DELETE_OLD_BACKUP=$4 # 'delete-old' or none
+DELETE_OLD_BACKUP=${4:-'no'} # 'delete-old' or 'no'
 
 
 CURRENT_DIR=$(pwd)
@@ -35,11 +35,11 @@ else
 
     if [ $DELETE_OLD_BACKUP = "delete-old" ]
     then
-        cd DIRECTORY_FOR_SAVE
+        cd $DIRECTORY_FOR_SAVE
         echo "Удаление старых бэкапов из $DIRECTORY_FOR_SAVE"
         find . -name '$(whoami)*' -type f | xargs stat -c "%Y %n" | sort -n \
             | head -1 | cut -d' ' -f2 | xargs rm -f
-        cd CURRENT_DIR
+        cd $CURRENT_DIR
     fi
 
     if [ $EXCLUDE_ARGUMENT = "s" ]
