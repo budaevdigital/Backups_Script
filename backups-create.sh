@@ -37,7 +37,7 @@ else
     then
         cd DIRECTORY_FOR_SAVE
         echo "Удаление старых бэкапов из $DIRECTORY_FOR_SAVE"
-        find . -name '$(whoami)*' -type f | xargs stat -c "%Y %n" | sort -n #\
+        find . -name '$(whoami)*' -type f | xargs stat -c "%Y %n" | sort -n \
             | head -1 | cut -d' ' -f2 | xargs rm -f
         cd CURRENT_DIR
     fi
