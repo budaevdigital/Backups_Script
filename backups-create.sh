@@ -55,7 +55,6 @@ else
             --exclude="downloads" \
             --exclude="*tmp/*" \
             --exclude="Downloads" \
-            --exclude="Documents" \
             --exclude="Pictures" \
             --exclude=".Trash" \
             --exclude=".local/*" \
