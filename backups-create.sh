@@ -30,7 +30,7 @@ else
     if [ $WHATS_DIRECTORY_BACKUP = "default" ]
     then
         echo "Выбраны стандартные директории для бэкапа"
-        WHATS_DIRECTORY_BACKUP="/home /usr"
+        WHATS_DIRECTORY_BACKUP=$BASE_DIR
         echo $WHATS_DIRECTORY_BACKUP
     fi
 
@@ -59,7 +59,6 @@ else
             --exclude="Pictures" \
             --exclude=".Trash" \
             --exclude=".local/*" \
-            --exclude="virtualbox" \
             --delete $ZIP_DIRECTORY \
             2>/dev/null && echo " Выполнено!" || echo " Ошибка!" 
     else
