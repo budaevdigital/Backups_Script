@@ -3,6 +3,8 @@ set -e
 
 # Принимаем имя бэкап-файла, без расширения
 BACKUP_FILE=$1 # sample: 'arkalaust_2022-08-23'
+DIRECTORY_WHERE_SAVE=${2:-'/'} # your custom directory or '/'
+
 
 CURRENT_DIR=$(pwd)
 BASE_DIR="/home/$(whoami)"
@@ -27,7 +29,7 @@ else
         echo -n "3: Перенос файлов в основной каталог... "
         cd $DIRECTORY_FOR_SAVE$DIRECTORY_FOR_SAVE$BACKUP_FILE
         pwd
-        sudo mv * / && echo " Выполнено!" || echo " Ошибка!"
+        sudo mv * $DIRECTORY_WHERE_SAVE && echo " Выполнено!" || echo " Ошибка!"
         cd $CURRENT_DIR
 
         echo -n "4: Удаление незашифрованного архива после восстановления: $BACKUP_FILE.tar.gz"
