@@ -3,7 +3,7 @@ set -e
 
 # Принимаем имя бэкап-файла, без расширения
 BACKUP_FILE=$1 # sample: 'arkalaust_2022-08-23'
-DIRECTORY_WHERE_SAVE=${2:-'/home/'} # your custom directory or '/'
+DIRECTORY_WHERE_SAVE=${2:-'/'} # your custom directory or '/'
 
 
 CURRENT_DIR=$(pwd)
