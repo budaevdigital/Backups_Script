@@ -1,6 +1,7 @@
 #!/bin/sh
 set -e
 
+# Аргументы, которые передаются вместе с командой
 WHATS_DIRECTORY_BACKUP=$1 # 'default' or '/etc /home /root /usr'
 EXCLUDE_ARGUMENT=$2 # 's' or 'exclude.lst'
 GPG_PUB_KEY=$3
@@ -29,7 +30,7 @@ else
     if [ $WHATS_DIRECTORY_BACKUP = "default" ]
     then
         echo "Выбраны стандартные директории для бэкапа"
-        WHATS_DIRECTORY_BACKUP="/etc /home /root /usr"
+        WHATS_DIRECTORY_BACKUP="/home /usr"
         echo $WHATS_DIRECTORY_BACKUP
     fi
 
